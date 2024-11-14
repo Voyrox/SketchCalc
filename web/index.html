@@ -1,74 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canvas Drawing</title>
-    <link rel="stylesheet" href="index.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Drawing Application</title>
+    <link rel="stylesheet" href="index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
-  </head>
-  <body>
-    <canvas id="drawingCanvas"></canvas>
+</head>
+<body>
     <main>
-      <div class="buttons">
-        <button onclick="parseDrawing()">Parse + Evaluation</button>
-        <button onclick="UndoDrawing()">Undo</button>
-        <button onclick="clearCanvas()">Clear</button>
-        <button onclick="mergeBoxes()">Merge</button>
-        <button onclick="unmergeBoxes()">Unmerge</button>
-        <button onclick="SaveToDataset()">Save</button>
-      </div>
-      <div class="buttons">
-        <button onclick="MathTex()">MathTex</button>
-        <button onclick="MathML()">MathML</button>
-        <button onclick="imageProcessing()">Image</button>
-      </div>
-      <div class="outputs-container">
-        <div class="outputs">
-          <div class="output-group">
-            <label for="parseOutput">Parse Output:</label>
-            <textarea id="parseOutput" rows="4"></textarea>
-          </div>
-          <div class="output-group">
-            <label for="evaluationOutput">Evaluation Output:</label>
-            <textarea id="evaluationOutput" rows="4"></textarea>
-          </div>
-          <div class="output-group">
-            <label for="elapsedTime">Elapsed Time:</label>
-            <textarea id="elapsedTime" rows="1"></textarea>
-          </div>
-        </div>
-        <div class="table-container">
-          <table id="mathTexTable">
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Value</th>
-              <th>Action</th>
-            </tr>
-          </table>
-          <button onclick="addRow()">Add Variable</button>
-        </div>
-      </div>
+        <section class="canvas-section">
+            <canvas id="drawingCanvas"></canvas>
+            <div class="canvas-buttons">
+                <button onclick="parseDrawing()">Parse + Evaluation</button>
+                <button onclick="UndoDrawing()">Undo</button>
+                <button onclick="clearCanvas()">Clear</button>
+                <button onclick="mergeBoxes()">Merge</button>
+                <button onclick="unmergeBoxes()">Unmerge</button>
+                <button onclick="SaveToDataset()">Save</button>
+            </div>
+        </section>
+        <section class="output-section">
+            <div class="outputs">
+                <div class="output-group">
+                    <label for="parseOutput">Parse Output:</label>
+                    <textarea id="parseOutput" rows="4"></textarea>
+                </div>
+                <div class="output-group">
+                    <label for="evaluationOutput">Evaluation Output:</label>
+                    <textarea id="evaluationOutput" rows="4"></textarea>
+                </div>
+                <div class="output-group">
+                    <label for="elapsedTime">Elapsed Time:</label>
+                    <textarea id="elapsedTime" rows="1"></textarea>
+                </div>
+            </div>
+            <div class="table-container">
+                <h2>Variables</h2>
+                <table id="mathTexTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Action</th>
+                    </tr>
+                </table>
+                <button class="add-variable-btn" onclick="addRow()">Add Variable</button>
+            </div>
+        </section>
+        <section class="extra-buttons">
+            <button onclick="MathTex()">MathTex</button>
+            <button onclick="MathML()">MathML</button>
+            <button onclick="imageProcessing()">Image</button>
+        </section>
     </main>
     <script src="functions.js"></script>
     <script src="index.js"></script>
     <script>
-      function addRow() {
-        const table = document.getElementById('mathTexTable');
-        const row = table.insertRow();
-        row.innerHTML = `
-          <td><input type="text" placeholder="Name"></td>
-          <td><input type="text" placeholder="Type"></td>
-          <td><input type="text" placeholder="Value"></td>
-          <td><button onclick="removeRow(this)">Remove</button></td>
-        `;
-      }
+        function addRow() {
+            const table = document.getElementById('mathTexTable');
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td><input type="text" placeholder="Name"></td>
+                <td><input type="text" placeholder="Type"></td>
+                <td><input type="text" placeholder="Value"></td>
+                <td><button onclick="removeRow(this)">Remove</button></td>
+            `;
+        }
 
-      function removeRow(button) {
-        const row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-      }
+        function removeRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
     </script>
-  </body>
+</body>
 </html>

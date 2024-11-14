@@ -1,47 +1,132 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100vh;
+    margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #131212;
-    color: #dee1e9;
-    overflow-x: hidden;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+header {
+    background-color: #1f1f1f;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
 }
 
 h1 {
-    font-size: 1.5rem;
+    margin: 0;
+    font-size: 2rem;
 }
 
 main {
-    width: 90%;
     max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Canvas Section */
+.canvas-section {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#drawingCanvas {
+    width: 100%;
+    height: 60vh;
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    cursor: crosshair;
+}
+
+.canvas-buttons {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.canvas-buttons button {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Output Section */
+.output-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin-top: 2rem;
 }
 
-canvas {
-    width: 100%;
-    height: 43vh;
-    cursor: crosshair;
-    background-color: #ffffff;
-    display: block;
+.outputs, .table-container {
+    flex: 1;
+    min-width: 300px;
+    margin: 1rem;
 }
 
-.buttons {
-    margin: 1rem 0;
-    display: flex;
-    gap: 1rem;
+.output-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    resize: vertical;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.table-container h2 {
+    margin-bottom: 0.5rem;
+}
+
+#mathTexTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+#mathTexTable th, #mathTexTable td {
+    border: 1px solid #444;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+#mathTexTable th {
+    background-color: #1f1f1f;
+}
+
+#mathTexTable td input {
+    width: 100%;
+    padding: 0.25rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+}
+
+.add-variable-btn {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.add-variable-btn:hover {
+    background-color: #218838;
 }
 
 button {
     padding: 0.5rem 1rem;
     background-color: #1a73e8;
-    color: #ffffff;
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -49,67 +134,23 @@ button {
 }
 
 button:hover {
-    background-color: #1558b0;
+    background-color: #1666c1;
 }
 
-.outputs-container {
-    width: 100%;
+.extra-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 2rem;
-}
-
-.outputs {
-    width: 48%;
-    display: flex;
-    flex-direction: column;
     gap: 1rem;
 }
 
-.table-container {
-    width: 48%;
-}
+@media (max-width: 768px) {
+    .output-section {
+        flex-direction: column;
+        align-items: center;
+    }
 
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-textarea {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #ffffff;
-    color: #202124;
-    border: 1px solid #dadce0;
-    border-radius: 4px;
-    resize: none;
-    font-family: 'Roboto', sans-serif;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-}
-
-table, th, td {
-    border: 1px solid #4c4f53;
-}
-
-th, td {
-    padding: 0.5rem;
-    text-align: left;
-}
-
-th {
-    background-color: #333536;
-}
-
-td input {
-    width: 100%;
-    padding: 0.5rem;
-    border: none;
-    background-color: #ffffff;
-    color: #202124;
+    .outputs, .table-container {
+        margin: 0.5rem 0;
+    }
 }

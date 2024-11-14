@@ -2,14 +2,14 @@ const canvas = document.getElementById('drawingCanvas');
 const timeElap = document.getElementById('elapsedTime');
 const context = canvas.getContext('2d');
 var startTime, endTime;
+const dpr = window.devicePixelRatio || 1;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight * 0.43;
+const rect = canvas.getBoundingClientRect();
 
-const scale = window.devicePixelRatio;
-canvas.width = Math.floor(canvas.width * scale);
-canvas.height = Math.floor(canvas.height * scale);
-context.scale(scale, scale);
+canvas.width = rect.width * dpr;
+canvas.height = rect.height * dpr;
+
+context.scale(dpr, dpr);
 
 let drawing = false;
 let currentPath = [];
@@ -21,11 +21,20 @@ canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mousemove', draw);
 
+function getMousePos(event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (event.clientX - rect.left),
+        y: (event.clientY - rect.top)
+    };
+}
+
 function startDrawing(event) {
     drawing = true;
     currentPath = [];
     context.beginPath();
-    context.moveTo(event.offsetX * scale, event.offsetY * scale);
+    const pos = getMousePos(event);
+    context.moveTo(pos.x, pos.y);
 }
 
 function stopDrawing() {
@@ -40,19 +49,18 @@ function stopDrawing() {
 function draw(event) {
     if (!drawing) return;
 
-    const x = event.offsetX * scale;
-    const y = event.offsetY * scale;
+    const pos = getMousePos(event);
 
     context.lineWidth = 5;
     context.lineCap = 'round';
-    context.strokeStyle = 'black';
+    context.strokeStyle = 'white';
 
-    context.lineTo(x, y);
+    context.lineTo(pos.x, pos.y);
     context.stroke();
     context.beginPath();
-    context.moveTo(x, y);
+    context.moveTo(pos.x, pos.y);
 
-    currentPath.push({ x, y });
+    currentPath.push({ x: pos.x, y: pos.y });
 }
 
 function calculateBoundingBox(path) {
@@ -119,7 +127,6 @@ function isClose(box1, box2) {
     return distance < xdistanceThreshold;
 }
 
-
 function drawAllBoundingBoxes() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     redrawAllPaths();
@@ -144,13 +151,12 @@ function redrawAllPaths() {
         for (const point of path) {
             context.lineTo(point.x, point.y);
         }
-        context.strokeStyle = 'black';
+        context.strokeStyle = 'white';
         context.lineWidth = 5;
         context.stroke();
         context.beginPath();
     }
 }
-
 
 function sendBoxToServer(box, callback) {
     startTime = new Date();
@@ -178,7 +184,7 @@ function sendBoxToServer(box, callback) {
     const offsetX = (width - scaledWidth) / 2;
     const offsetY = (height - scaledHeight) / 2;
 
-    boxContext.drawImage(canvas, box.minX, box.minY, boxWidth, boxHeight, offsetX, offsetY, scaledWidth, scaledHeight);
+    boxContext.drawImage(canvas, box.minX * dpr, box.minY * dpr, boxWidth * dpr, boxHeight * dpr, offsetX, offsetY, scaledWidth, scaledHeight);
 
     boxCanvas.toBlob(function(blob) {
         const formData = new FormData();
@@ -251,13 +257,17 @@ function parseDrawing() {
             } else {
                 if (output.includes('÷')) {
                     output = output.replace(/÷/g, '/');
-                } else if (output.includes('π')) {
+                }
+                if (output.includes('π')) {
                     output = output.replace(/π/g, 'pi');
-                } else if (output.includes('∞')) {
+                }
+                if (output.includes('∞')) {
                     output = output.replace(/∞/g, 'Infinity');
-                } else if (output.includes('√')) {
+                }
+                if (output.includes('√')) {
                     output = output.replace(/√/g, 'sqrt');
-                } else if (output.includes('Σ')) {
+                }
+                if (output.includes('Σ')) {
                     output = output.replace(/Σ/g, 'sum');
                 }
                 const calculatedOutput = math.evaluate(output);
@@ -274,7 +284,6 @@ function parseDrawing() {
     var timeDiff = endTime - startTime;
     timeElap.value = timeDiff + " ms";
 }
-
 
 function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -319,7 +328,7 @@ function SaveToDataset() {
         const offsetX = (width - scaledWidth) / 2;
         const offsetY = (height - scaledHeight) / 2;
 
-        boxContext.drawImage(canvas, box.minX, box.minY, boxWidth, boxHeight, offsetX, offsetY, scaledWidth, scaledHeight);
+        boxContext.drawImage(canvas, box.minX * dpr, box.minY * dpr, boxWidth * dpr, boxHeight * dpr, offsetX, offsetY, scaledWidth, scaledHeight);
 
         const label = prompt('Enter a label for this box:');
 
