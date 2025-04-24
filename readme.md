@@ -73,3 +73,8 @@ python3 -m pip install tensorflow[and-cuda]
 # Keras to tflite
 python convert_to_tflite.py -i model.keras -o model.tflite
 ```
+
+# Keras to WebModel
+```bash
+python KerasToWebModel.py
+```
