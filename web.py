@@ -3,7 +3,7 @@ import random
 import string
 import cv2
 import numpy as np
-from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.models import load_model
 import tensorflow as tf
 from flask import Flask, request, jsonify
 from flask_cors import CORS
