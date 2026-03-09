@@ -73,7 +73,6 @@ def predict():
         return jsonify({"error": "No selected file"}), 400
     if file and file.filename.lower().endswith(('.jpg', '.jpeg', '.png')):
         try:
-            #file.save(file.filename)
             predicted_label, confidence = predict_with_confidence(model, file, class_names, img_height, img_width)
             return jsonify({"predicted_label": predicted_label, "confidence": f"{confidence:.2f}"}), 200
         except RuntimeError as e:

@@ -40,7 +40,6 @@ def load_datasets(img_height, img_width, batch_size=config.batch_size):
     normalized_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
     image_batch, labels_batch = next(iter(normalized_ds))
     first_image = image_batch[0]
-    # The pixels values are now in `[0,1]`.
     print(np.min(first_image), np.max(first_image))
 
     AUTOTUNE = tf.data.AUTOTUNE

@@ -1,156 +1,442 @@
+:root {
+    color-scheme: dark;
+    --pageBackground: #0d1726;
+    --panelBackground: #162235;
+    --panelBorder: rgba(133, 182, 255, 0.2);
+    --panelShadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+    --textPrimary: #f4f7fb;
+    --textSecondary: #c2d2eb;
+    --textMuted: #8da4c7;
+    --surfaceStrong: rgba(8, 17, 31, 0.92);
+    --accentBlue: #7cc6ff;
+    --accentTeal: #74f2d2;
+    --accentGold: #ffd37a;
+    --buttonPrimary: #82bcff;
+    --buttonSecondary: #223149;
+    --buttonHover: #2c3f5d;
+    --inputBorder: rgba(150, 180, 234, 0.22);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
+    min-height: 100vh;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    background: var(--pageBackground);
+    color: var(--textPrimary);
+    -webkit-text-size-adjust: 100%;
 }
 
-header {
-    background-color: #1f1f1f;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
+.appShell {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    padding: 20px 0 32px;
 }
 
-h1 {
-    margin: 0;
-    font-size: 2rem;
+.heroPanel,
+.panelCard {
+    position: relative;
+    border: 1px solid var(--panelBorder);
+    border-radius: 24px;
+    background: var(--panelBackground);
+    box-shadow: var(--panelShadow);
 }
 
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-/* Canvas Section */
-.canvas-section {
+.heroPanel {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    background: #18263b;
+}
+
+.heroCopy,
+.heroBadge,
+.panelHeader,
+.supportHeader {
+    position: relative;
+    z-index: 1;
+}
+
+.heroCopy {
+    max-width: 980px;
+}
+
+.appTitle {
+    margin: 0;
+    font-size: clamp(1.7rem, 2.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.appSubtitle {
+    margin: 10px 0 0;
+    max-width: 72ch;
+    color: var(--textSecondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.eyebrow,
+.panelEyebrow,
+.badgeLabel {
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.68rem;
+    color: var(--accentTeal);
+}
+
+.heroCopy h1,
+.panelTitle {
+    margin: 0;
+    line-height: 1.05;
+}
+
+.heroCopy h1 {
+    max-width: 22ch;
+    font-size: clamp(1.55rem, 2.2vw, 2.4rem);
+}
+
+.heroText,
+.panelHint {
+    color: var(--textSecondary);
+}
+
+.heroText {
+    max-width: 70ch;
+    margin: 10px 0 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.heroBadge {
+    align-self: flex-start;
+    min-width: 190px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #223149;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.heroBadge strong {
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.heroMeta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-content: flex-start;
+    gap: 10px;
+    max-width: 360px;
+}
+
+.heroPill {
+    display: inline-flex;
     align-items: center;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: #223149;
+    color: var(--textSecondary);
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.workspaceGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(360px, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.panelCard {
+    padding: 20px;
+}
+
+.panelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.panelEyebrow {
+    margin-bottom: 8px;
+}
+
+.panelTitle {
+    font-size: 1.25rem;
+}
+
+.panelHint {
+    margin: 0;
+    max-width: 42ch;
+    line-height: 1.45;
+    font-size: 0.9rem;
+}
+
+.canvasPanel {
+    min-width: 0;
+}
+
+.canvasFrame {
+    position: relative;
+    padding: 14px;
+    border-radius: 20px;
+    background: #1b2a41;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 #drawingCanvas {
+    display: block;
     width: 100%;
-    height: 60vh;
-    background-color: #2b2b2b;
-    border: 1px solid #444;
+    height: 62vh;
+    min-height: 420px;
+    background: #0c1524;
+    border: 1px solid rgba(160, 194, 255, 0.16);
+    border-radius: 18px;
     cursor: crosshair;
+    touch-action: none;
 }
 
-.canvas-buttons {
-    margin-top: 1rem;
+.buttonRow,
+.supportActions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 12px;
 }
 
-.canvas-buttons button {
-    flex: 1;
-    min-width: 120px;
+.buttonRow button,
+.supportActions button {
+    flex: 1 1 160px;
+    min-height: 50px;
 }
 
-/* Output Section */
-.output-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 2rem;
+.buttonRow {
+    margin-top: 18px;
 }
 
-.outputs, .table-container {
-    flex: 1;
-    min-width: 300px;
-    margin: 1rem;
+.inspectorColumn {
+    display: grid;
+    gap: 18px;
 }
 
-.output-group {
-    margin-bottom: 1rem;
+.outputStack {
+    display: grid;
+    gap: 16px;
+}
+
+.outputGroup {
+    display: grid;
+    gap: 8px;
+}
+
+.compactOutput textarea {
+    min-height: 52px;
 }
 
 label {
     display: block;
-    margin-bottom: 0.25rem;
-    font-weight: 500;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--textSecondary);
+}
+
+textarea,
+#mathTexTable td input {
+    width: 100%;
+    border: 1px solid var(--inputBorder);
+    border-radius: 16px;
+    background: var(--surfaceStrong);
+    color: var(--textPrimary);
+    font: inherit;
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 textarea {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #444;
-    border-radius: 4px;
+    min-height: 92px;
+    padding: 14px 16px;
     resize: vertical;
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    font-family: 'Roboto', sans-serif;
 }
 
-.table-container h2 {
-    margin-bottom: 0.5rem;
+textarea:focus,
+#mathTexTable td input:focus {
+    outline: none;
+    border-color: rgba(103, 183, 255, 0.5);
+    box-shadow: 0 0 0 4px rgba(103, 183, 255, 0.12);
+}
+
+.tableShell {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #101b2c;
 }
 
 #mathTexTable {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 1rem;
 }
 
-#mathTexTable th, #mathTexTable td {
-    border: 1px solid #444;
-    padding: 0.5rem;
+#mathTexTable th,
+#mathTexTable td {
+    padding: 14px;
     text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 #mathTexTable th {
-    background-color: #1f1f1f;
+    background: #1f2f47;
+    color: var(--textPrimary);
+    font-size: 0.86rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+#mathTexTable tr:last-child td {
+    border-bottom: none;
 }
 
 #mathTexTable td input {
-    width: 100%;
-    padding: 0.25rem;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background-color: #2b2b2b;
-    color: #e0e0e0;
-}
-
-.add-variable-btn {
-    background-color: #28a745;
-    color: #fff;
-}
-
-.add-variable-btn:hover {
-    background-color: #218838;
+    padding: 10px 12px;
 }
 
 button {
-    padding: 0.5rem 1rem;
-    background-color: #1a73e8;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
+    appearance: none;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 12px 18px;
+    color: #04111f;
+    font: inherit;
+    font-weight: 700;
     cursor: pointer;
-    font-size: 1rem;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
 button:hover {
-    background-color: #1666c1;
+    transform: translateY(-1px);
 }
 
-.extra-buttons {
-    display: flex;
+button:active {
+    transform: translateY(1px);
+}
+
+.primaryAction,
+.accentAction {
+    background: var(--buttonPrimary);
+    box-shadow: 0 16px 30px rgba(74, 168, 255, 0.22);
+}
+
+.secondaryAction,
+#mathTexTable td button {
+    background: var(--buttonSecondary);
+    color: var(--textPrimary);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.secondaryAction:hover,
+#mathTexTable td button:hover {
+    background: var(--buttonHover);
+}
+
+.addVariableButton {
+    margin-top: 18px;
+    width: 100%;
     justify-content: center;
-    margin-top: 2rem;
-    gap: 1rem;
 }
 
-@media (max-width: 768px) {
-    .output-section {
+.supportPanel {
+    margin-top: 18px;
+    background: #162235;
+}
+
+.supportHeader {
+    margin-bottom: 18px;
+}
+
+@media (max-width: 1180px) {
+    .heroPanel,
+    .panelHeader {
         flex-direction: column;
-        align-items: center;
     }
 
-    .outputs, .table-container {
-        margin: 0.5rem 0;
+    .workspaceGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .heroCopy h1 {
+        max-width: none;
+    }
+
+    .panelHint {
+        max-width: none;
+    }
+
+    .heroMeta {
+        justify-content: flex-start;
+        max-width: none;
+    }
+}
+
+@media (max-width: 900px) {
+    .appShell {
+        width: min(100% - 24px, 1280px);
+        padding-top: 24px;
+        padding-bottom: 32px;
+    }
+
+    .heroPanel,
+    .panelCard {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .appShell {
+        width: min(100% - 20px, 1280px);
+        padding-top: 20px;
+        padding-bottom: 28px;
+    }
+
+    .heroPanel,
+    .panelCard {
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .heroCopy h1 {
+        font-size: 2.4rem;
+    }
+
+    #drawingCanvas {
+        height: 54vh;
+        min-height: 320px;
+    }
+
+    .buttonRow button,
+    .supportActions button,
+    .addVariableButton {
+        width: 100%;
+    }
+
+    #mathTexTable th,
+    #mathTexTable td {
+        padding: 10px;
     }
 }

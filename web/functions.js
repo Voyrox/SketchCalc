@@ -7,28 +7,109 @@ function UndoDrawing() {
 }
 
 function mergeBoxes() {
-    let merged = false;
-    do {
-        merged = false;
-        for (let i = 0; i < boxes.length; i++) {
-            for (let j = i + 1; j < boxes.length; j++) {
-                if (isOverlapping(boxes[i], boxes[j]) || isMostlyWithin(boxes[i], boxes[j])) {
-                    boxes[i].minX = Math.min(boxes[i].minX, boxes[j].minX);
-                    boxes[i].minY = Math.min(boxes[i].minY, boxes[j].minY);
-                    boxes[i].maxX = Math.max(boxes[i].maxX, boxes[j].maxX);
-                    boxes[i].maxY = Math.max(boxes[i].maxY, boxes[j].maxY);
-                    boxes.splice(j, 1);
-                    merged = true;
-                    break;
-                }
-            }
-            if (merged) break;
-        }
-    } while (merged);
+    boxes = normalizeBoxes(boxes);
     drawAllBoundingBoxes();
 }
 
-function unmergeBoxes() {}
+function unmergeBoxes() {
+    recalculateBoundingBoxes({ preserveSeparateBoxes: true });
+    drawAllBoundingBoxes();
+}
+
+function recalculateBoundingBoxes(options = {}) {
+    const { preserveSeparateBoxes = false } = options;
+    const nextBoxes = paths
+        .map(path => calculateBoundingBox(path))
+        .filter(box => box !== null);
+
+    boxes = preserveSeparateBoxes ? nextBoxes : normalizeBoxes(nextBoxes);
+}
+
+function normalizeBoxes(inputBoxes) {
+    const pendingBoxes = inputBoxes.map(cloneBox);
+    const normalizedBoxes = [];
+
+    while (pendingBoxes.length > 0) {
+        let currentBox = pendingBoxes.pop();
+        let mergedBox = true;
+
+        while (mergedBox) {
+            mergedBox = false;
+
+            for (let i = 0; i < pendingBoxes.length; i++) {
+                if (shouldMergeBoxes(currentBox, pendingBoxes[i])) {
+                    currentBox = combineBoxes(currentBox, pendingBoxes[i]);
+                    pendingBoxes.splice(i, 1);
+                    mergedBox = true;
+                    break;
+                }
+            }
+
+            if (mergedBox) {
+                continue;
+            }
+
+            for (let i = 0; i < normalizedBoxes.length; i++) {
+                if (shouldMergeBoxes(currentBox, normalizedBoxes[i])) {
+                    currentBox = combineBoxes(currentBox, normalizedBoxes[i]);
+                    normalizedBoxes.splice(i, 1);
+                    mergedBox = true;
+                    break;
+                }
+            }
+        }
+
+        normalizedBoxes.push(currentBox);
+    }
+
+    return normalizedBoxes.sort((leftBox, rightBox) => leftBox.minX - rightBox.minX);
+}
+
+function shouldMergeBoxes(leftBox, rightBox) {
+    return isClose(leftBox, rightBox) || isOverlapping(leftBox, rightBox) || isMostlyWithin(leftBox, rightBox);
+}
+
+function combineBoxes(leftBox, rightBox) {
+    return {
+        minX: Math.min(leftBox.minX, rightBox.minX),
+        minY: Math.min(leftBox.minY, rightBox.minY),
+        maxX: Math.max(leftBox.maxX, rightBox.maxX),
+        maxY: Math.max(leftBox.maxY, rightBox.maxY),
+        predicted_label: leftBox.predicted_label || rightBox.predicted_label || ''
+    };
+}
+
+function cloneBox(box) {
+    return {
+        minX: box.minX,
+        minY: box.minY,
+        maxX: box.maxX,
+        maxY: box.maxY,
+        predicted_label: box.predicted_label || ''
+    };
+}
+
+function isOverlapping(leftBox, rightBox) {
+    return !(
+        leftBox.maxX < rightBox.minX ||
+        rightBox.maxX < leftBox.minX ||
+        leftBox.maxY < rightBox.minY ||
+        rightBox.maxY < leftBox.minY
+    );
+}
+
+function isMostlyWithin(leftBox, rightBox) {
+    return boxContains(leftBox, rightBox, 0.85) || boxContains(rightBox, leftBox, 0.85);
+}
+
+function boxContains(containerBox, innerBox, threshold) {
+    const overlapWidth = Math.max(0, Math.min(containerBox.maxX, innerBox.maxX) - Math.max(containerBox.minX, innerBox.minX));
+    const overlapHeight = Math.max(0, Math.min(containerBox.maxY, innerBox.maxY) - Math.max(containerBox.minY, innerBox.minY));
+    const overlapArea = overlapWidth * overlapHeight;
+    const innerArea = Math.max(1, (innerBox.maxX - innerBox.minX) * (innerBox.maxY - innerBox.minY));
+
+    return overlapArea / innerArea >= threshold;
+}
 
 function imageProcessing() {}
 

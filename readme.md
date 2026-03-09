@@ -61,14 +61,21 @@ SketchCalc is an interactive web application that allows users to draw mathemati
 
 ## Testing on Windows
 ```bash
+# Install Python 3.11
+sudo pacman -S python31
+
 # Create a new virtual environment
-python -m venv venv
+python3.11 -m venv .venv
 
 # Activate the virtual environment
-.\venv\Scripts\activate || source venv/bin/activate
+.\venv\Scripts\activate || source venv/bin/activate || source .venv/bin/activate.fish
 
-# Install Tensorflow
-python3 -m pip install tensorflow[and-cuda]
+# Install dependencies
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install opencv-python flask flask_cors pillow "tensorflow[and-cuda]"
+
+# Test if the GPU is being detected
+python -c "import tensorflow as tf; print(tf.__version__); print(tf.config.list_physical_devices('GPU'))"
 
 # Keras to tflite
 python convert_to_tflite.py -i model.keras -o model.tflite
@@ -77,4 +84,10 @@ python convert_to_tflite.py -i model.keras -o model.tflite
 # Keras to WebModel
 ```bash
 python KerasToWebModel.py
+```
+
+##### Dev notes:
+```
+set -gx LD_LIBRARY_PATH (python -c 'import site, glob, os; sp = site.getsitepackages()[0]; print(":".join(glob.glob(os.path.join(sp, "nvidia", "*", "lib"))))') $LD_LIBRARY_PATH
+python -c "import tensorflow as tf; print(tf.__version__); print(tf.config.list_physical_devices('GPU'))"
 ```

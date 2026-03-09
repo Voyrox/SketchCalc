@@ -8,50 +8,87 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
 </head>
 <body>
-    <main>
-        <section class="canvas-section">
-            <canvas id="drawingCanvas"></canvas>
-            <div class="canvas-buttons">
-                <button onclick="parseDrawing()">Parse + Evaluation</button>
-                <button onclick="UndoDrawing()">Undo</button>
-                <button onclick="clearCanvas()">Clear</button>
-                <button onclick="mergeBoxes()">Merge</button>
-                <button onclick="unmergeBoxes()">Unmerge</button>
-                <button onclick="SaveToDataset()">Save</button>
+    <main class="appShell">
+        <section class="heroPanel">
+            <div class="heroCopy">
+                <h1 class="appTitle">SketchCalc</h1>
+                <p class="appSubtitle">A cleaner workspace for sketching expressions, checking parser results, and editing variables without clutter.</p>
             </div>
         </section>
-        <section class="output-section">
-            <div class="outputs">
-                <div class="output-group">
-                    <label for="parseOutput">Parse Output:</label>
-                    <textarea id="parseOutput" rows="4"></textarea>
+
+        <section class="workspaceGrid">
+            <section class="panelCard canvasPanel">
+                <div class="panelHeader">
+                    <div>
+                        <p class="panelEyebrow">Canvas</p>
+                        <h2 class="panelTitle">Expression board</h2>
+                    </div>
+                    <p class="panelHint">Use the canvas to sketch symbols, then run parsing or cleanup actions.</p>
                 </div>
-                <div class="output-group">
-                    <label for="evaluationOutput">Evaluation Output:</label>
-                    <textarea id="evaluationOutput" rows="4"></textarea>
+
+                <div class="canvasFrame">
+                    <canvas id="drawingCanvas"></canvas>
                 </div>
-                <div class="output-group">
-                    <label for="elapsedTime">Elapsed Time:</label>
-                    <textarea id="elapsedTime" rows="1"></textarea>
+
+                <div class="buttonRow">
+                    <button class="primaryAction" onclick="parseDrawing()">Parse + Evaluate</button>
+                    <button class="secondaryAction" onclick="UndoDrawing()">Undo</button>
+                    <button class="secondaryAction" onclick="clearCanvas()">Clear</button>
+                    <button class="secondaryAction" onclick="mergeBoxes()">Merge</button>
+                    <button class="secondaryAction" onclick="unmergeBoxes()">Unmerge</button>
+                    <button class="accentAction" onclick="SaveToDataset()">Save</button>
                 </div>
-            </div>
-            <div class="table-container">
-                <h2>Variables</h2>
-                <table id="mathTexTable">
-                    <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th>Action</th>
-                    </tr>
-                </table>
-                <button class="add-variable-btn" onclick="addRow()">Add Variable</button>
-            </div>
-        </section>
-        <section class="extra-buttons">
-            <button onclick="MathTex()">MathTex</button>
-            <button onclick="MathML()">MathML</button>
-            <button onclick="imageProcessing()">Image</button>
+            </section>
+
+            <section class="inspectorColumn">
+                <section class="panelCard outputPanel">
+                    <div class="panelHeader">
+                        <div>
+                            <p class="panelEyebrow">Results</p>
+                            <h2 class="panelTitle">Parser output</h2>
+                        </div>
+                        <p class="panelHint">Review the recognized expression, computed value, and elapsed runtime.</p>
+                    </div>
+
+                    <div class="outputStack">
+                        <div class="outputGroup">
+                            <label for="parseOutput">Parse Output</label>
+                            <textarea id="parseOutput" rows="4"></textarea>
+                        </div>
+                        <div class="outputGroup">
+                            <label for="evaluationOutput">Evaluation Output</label>
+                            <textarea id="evaluationOutput" rows="4"></textarea>
+                        </div>
+                        <div class="outputGroup compactOutput">
+                            <label for="elapsedTime">Elapsed Time</label>
+                            <textarea id="elapsedTime" rows="1"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panelCard tablePanel">
+                    <div class="panelHeader">
+                        <div>
+                            <p class="panelEyebrow">Variables</p>
+                            <h2 class="panelTitle">Value table</h2>
+                        </div>
+                        <p class="panelHint">Define variable names, types, and values used during expression evaluation.</p>
+                    </div>
+
+                    <div class="tableShell">
+                        <table id="mathTexTable">
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Action</th>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <button class="accentAction addVariableButton" onclick="addRow()">Add Variable</button>
+                </section>
+            </section>
         </section>
     </main>
     <script src="functions.js"></script>
