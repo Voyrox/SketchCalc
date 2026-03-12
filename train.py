@@ -1,9 +1,9 @@
 import argparse
 import tensorflow as tf
 import config
-from NeuralNetwork.load.load_dataset import load_datasets
-from NeuralNetwork.model.build_model import build_model
-from NeuralNetwork.model.train_model import train_model
+from load.load_dataset import load_datasets
+from model.build_model import build_model
+from model.train_model import train_model
 
 def set_gpu_config(use_gpu):
     if use_gpu:
